@@ -64,7 +64,7 @@ class TributeSpec: QuickSpec {
                     string.appendAttributedString(NSAttributedString(string: "apple", attributes: [
                         NSForegroundColorAttributeName: UIColor.redColor()
                     ]))
-                    string.add("pineapple") { (inout a: Attributes) in
+                    string.add("pineapple") { (a: inout Attributes) in
                         a.reset()
                     }
                     expect(string.runningAttributes!).to(haveCount(0))
@@ -73,7 +73,7 @@ class TributeSpec: QuickSpec {
             
             describe("simple manipulations") {
                 it("should keep running attributes") {
-                    string.add("Hello ") { (inout a: Attributes) in
+                    string.add("Hello ") { (a: inout Attributes) in
                         a.color = .redColor()
                     }
                     string.add("world") { _ in
@@ -88,7 +88,7 @@ class TributeSpec: QuickSpec {
         context("properties") {
             describe("alignment") {
                 it("sets new value") {
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.alignment = .Center
                     }
                     expect(string.runningAttributes).to(haveCount(1))
@@ -97,7 +97,7 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("sets new value equal to default") {
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.alignment = NSParagraphStyle.defaultParagraphStyle().alignment
                     }
                     expect(string.runningAttributes).to(haveCount(1))
@@ -106,10 +106,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("overrides existent value with a new one") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.alignment = .Center
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         expect(string.runningAttributes).to(haveCount(1))
                         let paragraph = string.runningAttributes![NSParagraphStyleAttributeName] as? NSParagraphStyle
                         expect(paragraph?.alignment).to(equal(NSTextAlignment.Center))
@@ -123,10 +123,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("overrides existent value equal to the default with a new one") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.alignment = NSParagraphStyle.defaultParagraphStyle().alignment
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.alignment = .Justified
                     }
                     expect(string.runningAttributes).to(haveCount(1))
@@ -136,10 +136,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("overrides existent value with a new one equal to the default") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.alignment = .Center
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.alignment = NSParagraphStyle.defaultParagraphStyle().alignment
                     }
                     expect(string.runningAttributes).to(haveCount(1))
@@ -150,10 +150,10 @@ class TributeSpec: QuickSpec {
                 
                 
                 it("removes existent value when set to nil") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.alignment = .Center
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.alignment = nil
                     }
                     expect(string.runningAttributes).to(haveCount(0))
@@ -162,7 +162,7 @@ class TributeSpec: QuickSpec {
 
             describe("backgroundColor") {
                 it("sets new value") {
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.backgroundColor = .redColor()
                     }
                     expect(string.runningAttributes).to(haveCount(1))
@@ -170,10 +170,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("overrides existent value with a new one") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.backgroundColor = .redColor()
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         expect(string.runningAttributes).to(haveCount(1))
                         expect(string.runningAttributes![NSBackgroundColorAttributeName] as? UIColor).to(equal(UIColor.redColor()))
                         a.backgroundColor = .blueColor()
@@ -183,10 +183,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("removes existent value when set to nil") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.backgroundColor = .redColor()
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.backgroundColor = nil
                     }
                     expect(string.runningAttributes).to(haveCount(0))
@@ -195,7 +195,7 @@ class TributeSpec: QuickSpec {
 
             describe("baseline") {
                 it("sets new value") {
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.baseline = 13
                     }
                     expect(string.runningAttributes).to(haveCount(1))
@@ -203,10 +203,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("overrides existent value with a new one") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.baseline = 13
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         expect(string.runningAttributes).to(haveCount(1))
                         expect(string.runningAttributes![NSBaselineOffsetAttributeName] as? Float).to(equal(13))
                         a.baseline = -7
@@ -216,10 +216,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("removes existent value when set to nil") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.baseline = 7
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.baseline = nil
                     }
                     expect(string.runningAttributes).to(haveCount(0))
@@ -228,7 +228,7 @@ class TributeSpec: QuickSpec {
 
             describe("bold") {
                 it("sets new value") {
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.bold = true
                     }
                     expect(string.runningAttributes!).to(haveCount(1))
@@ -236,10 +236,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("overrides existent value with a new one") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.bold = true
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         expect(string.runningAttributes!).to(haveCount(1))
                         expect(string.runningAttributes![NSFontAttributeName] as? UIFont).to(equal(UIFont.boldSystemFontOfSize(12)))
                         a.bold = false
@@ -251,7 +251,7 @@ class TributeSpec: QuickSpec {
 
             describe("color") {
                 it("sets new value") {
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.color = .redColor()
                     }
                     expect(string.runningAttributes).to(haveCount(1))
@@ -259,10 +259,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("overrides existent value with a new one") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.color = .redColor()
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         expect(string.runningAttributes).to(haveCount(1))
                         expect(string.runningAttributes![NSForegroundColorAttributeName] as? UIColor).to(equal(UIColor.redColor()))
                         a.color = .blueColor()
@@ -272,10 +272,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("removes existent value when set to nil") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.color = .redColor()
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.color = nil
                     }
                     expect(string.runningAttributes).to(haveCount(0))
@@ -284,7 +284,7 @@ class TributeSpec: QuickSpec {
 
             describe("direction") {
                 it("sets new value") {
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.direction = .Vertical
                     }
                     expect(string.runningAttributes!).to(haveCount(1))
@@ -295,16 +295,16 @@ class TributeSpec: QuickSpec {
                     string.appendAttributedString(NSAttributedString(string: "invalid direciton", attributes: [
                         NSVerticalGlyphFormAttributeName: 13
                     ]))
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         expect(a.direction).to(beNil())
                     }
                 }
 
                 it("overrides existent value with a new one") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.direction = .Vertical
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         expect(string.runningAttributes!).to(haveCount(1))
                         expect(string.runningAttributes![NSVerticalGlyphFormAttributeName] as? Int).to(equal(1))
                         
@@ -315,20 +315,20 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("removes existent value when set to nil") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.direction = .Horizontal
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.direction = nil
                     }
                     expect(string.runningAttributes).to(haveCount(0))
                 }
                 
                 it("unknown glyph direction won't affect direction") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.direction = .Horizontal
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.direction = nil
                     }
                     expect(string.runningAttributes).to(haveCount(0))
@@ -337,7 +337,7 @@ class TributeSpec: QuickSpec {
 
             describe("expansion") {
                 it("sets new value") {
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.expansion = 3
                     }
                     expect(string.runningAttributes!).to(haveCount(1))
@@ -345,10 +345,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("overrides existent value with a new one") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.expansion = 3
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         expect(string.runningAttributes!).to(haveCount(1))
                         expect(string.runningAttributes![NSExpansionAttributeName] as? Float).to(equal(3))
                         
@@ -359,10 +359,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("removes existent value when set to nil") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.expansion = 10
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.expansion = nil
                     }
                     expect(string.runningAttributes).to(haveCount(0))
@@ -371,7 +371,7 @@ class TributeSpec: QuickSpec {
 
             describe("font") {
                 it("sets new value") {
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.font = .boldSystemFontOfSize(20)
                     }
                     expect(string.runningAttributes!).to(haveCount(1))
@@ -379,10 +379,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("overrides existent value with a new one") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.font = .boldSystemFontOfSize(20)
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         expect(string.runningAttributes!).to(haveCount(1))
                         expect(string.runningAttributes![NSFontAttributeName] as? UIFont).to(equal(UIFont.boldSystemFontOfSize(20)))
                         a.font = .italicSystemFontOfSize(20)
@@ -392,10 +392,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("removes existent value when set to nil") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.font = .boldSystemFontOfSize(20)
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.font = nil
                     }
                     expect(string.runningAttributes).to(haveCount(0))
@@ -404,7 +404,7 @@ class TributeSpec: QuickSpec {
 
             describe("italics") {
                 it("sets new value") {
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.italic = true
                     }
                     expect(string.runningAttributes!).to(haveCount(1))
@@ -412,10 +412,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("overrides existent value with a new one") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.italic = true
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         expect(string.runningAttributes!).to(haveCount(1))
                         expect(string.runningAttributes![NSFontAttributeName] as? UIFont).to(equal(UIFont.italicSystemFontOfSize(12)))
                         a.italic = false
@@ -427,7 +427,7 @@ class TributeSpec: QuickSpec {
 
             describe("leading") {
                 it("sets new value") {
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.leading = 20
                     }
                     expect(string.runningAttributes).to(haveCount(1))
@@ -436,7 +436,7 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("sets new value equal to default") {
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.leading = Float(NSParagraphStyle.defaultParagraphStyle().lineSpacing)
                     }
                     expect(string.runningAttributes).to(haveCount(1))
@@ -445,10 +445,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("overrides existent value with a new one") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.leading = 20
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         expect(string.runningAttributes).to(haveCount(1))
                         let paragraph = string.runningAttributes![NSParagraphStyleAttributeName] as? NSParagraphStyle
                         expect(paragraph?.lineSpacing).to(equal(20))
@@ -462,10 +462,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("overrides existent value equal to the default with a new one") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.leading = Float(NSParagraphStyle.defaultParagraphStyle().lineSpacing)
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.leading = 30
                     }
                     expect(string.runningAttributes).to(haveCount(1))
@@ -475,10 +475,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("overrides existent value with a new one equal to the default") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.leading = 30
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.leading = Float(NSParagraphStyle.defaultParagraphStyle().lineSpacing)
                     }
                     expect(string.runningAttributes).to(haveCount(1))
@@ -489,10 +489,10 @@ class TributeSpec: QuickSpec {
                 
                 
                 it("removes existent value when set to nil") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.leading = 30
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.leading = nil
                     }
                     expect(string.runningAttributes).to(haveCount(0))
@@ -501,7 +501,7 @@ class TributeSpec: QuickSpec {
 
             describe("ligature") {
                 it("sets new value") {
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.ligature = true
                     }
                     expect(string.runningAttributes!).to(haveCount(1))
@@ -509,10 +509,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("overrides existent value with a new one") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.ligature = true
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         expect(string.runningAttributes!).to(haveCount(1))
                         expect(string.runningAttributes![NSLigatureAttributeName] as? Int).to(equal(1))
                         a.ligature = false
@@ -522,10 +522,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("removes existent value when set to nil") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.ligature = true
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.ligature = nil
                     }
                     expect(string.runningAttributes).to(haveCount(0))
@@ -534,7 +534,7 @@ class TributeSpec: QuickSpec {
             
             describe("lineBreakMode") {
                 it("sets new value") {
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.lineBreakMode = .ByWordWrapping
                     }
                     expect(string.runningAttributes).to(haveCount(1))
@@ -543,10 +543,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("overrides existent value with a new one") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.lineBreakMode = .ByClipping
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         expect(string.runningAttributes).to(haveCount(1))
                         let paragraph = string.runningAttributes![NSParagraphStyleAttributeName] as? NSParagraphStyle
                         expect(paragraph?.lineBreakMode).to(equal(NSLineBreakMode.ByClipping))
@@ -560,10 +560,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("removes existent value when set to nil") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.lineBreakMode = .ByTruncatingHead
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.lineBreakMode = nil
                     }
                     expect(string.runningAttributes).to(haveCount(0))
@@ -573,7 +573,7 @@ class TributeSpec: QuickSpec {
 
             describe("paragraphSpacingAfter") {
                 it("sets new value") {
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.paragraphSpacingAfter = 10
                     }
                     expect(string.runningAttributes).to(haveCount(1))
@@ -582,10 +582,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("overrides existent value with a new one") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.paragraphSpacingAfter = 7
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         expect(string.runningAttributes).to(haveCount(1))
                         let paragraph = string.runningAttributes![NSParagraphStyleAttributeName] as? NSParagraphStyle
                         expect(paragraph?.paragraphSpacing).to(equal(7))
@@ -599,10 +599,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("removes existent value when set to nil") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.paragraphSpacingAfter = 13
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.paragraphSpacingAfter = nil
                     }
                     expect(string.runningAttributes).to(haveCount(0))
@@ -611,7 +611,7 @@ class TributeSpec: QuickSpec {
             
             describe("paragraphSpacingBefore") {
                 it("sets new value") {
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.paragraphSpacingBefore = 10
                     }
                     expect(string.runningAttributes).to(haveCount(1))
@@ -620,10 +620,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("overrides existent value with a new one") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.paragraphSpacingBefore = 7
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         expect(string.runningAttributes).to(haveCount(1))
                         let paragraph = string.runningAttributes![NSParagraphStyleAttributeName] as? NSParagraphStyle
                         expect(paragraph?.paragraphSpacingBefore).to(equal(7))
@@ -637,10 +637,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("removes existent value when set to nil") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.paragraphSpacingBefore = 13
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.paragraphSpacingBefore = nil
                     }
                     expect(string.runningAttributes).to(haveCount(0))
@@ -649,7 +649,7 @@ class TributeSpec: QuickSpec {
 
             describe("firstLineHeadIndent") {
                 it("sets new value") {
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.firstLineHeadIndent = 10
                     }
                     expect(string.runningAttributes).to(haveCount(1))
@@ -658,10 +658,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("overrides existent value with a new one") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.firstLineHeadIndent = 7
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         expect(string.runningAttributes).to(haveCount(1))
                         let paragraph = string.runningAttributes![NSParagraphStyleAttributeName] as? NSParagraphStyle
                         expect(paragraph?.firstLineHeadIndent).to(equal(7))
@@ -675,10 +675,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("removes existent value when set to nil") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.firstLineHeadIndent = 13
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.firstLineHeadIndent = nil
                     }
                     expect(string.runningAttributes).to(haveCount(0))
@@ -687,7 +687,7 @@ class TributeSpec: QuickSpec {
 
             describe("minimumLineHeight") {
                 it("sets new value") {
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.minimumLineHeight = 10
                     }
                     expect(string.runningAttributes).to(haveCount(1))
@@ -696,10 +696,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("overrides existent value with a new one") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.minimumLineHeight = 7
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         expect(string.runningAttributes).to(haveCount(1))
                         let paragraph = string.runningAttributes![NSParagraphStyleAttributeName] as? NSParagraphStyle
                         expect(paragraph?.minimumLineHeight).to(equal(7))
@@ -713,10 +713,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("removes existent value when set to nil") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.minimumLineHeight = 13
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.minimumLineHeight = nil
                     }
                     expect(string.runningAttributes).to(haveCount(0))
@@ -725,7 +725,7 @@ class TributeSpec: QuickSpec {
 
             describe("maximumLineHeight") {
                 it("sets new value") {
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.maximumLineHeight = 10
                     }
                     expect(string.runningAttributes).to(haveCount(1))
@@ -734,10 +734,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("overrides existent value with a new one") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.maximumLineHeight = 7
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         expect(string.runningAttributes).to(haveCount(1))
                         let paragraph = string.runningAttributes![NSParagraphStyleAttributeName] as? NSParagraphStyle
                         expect(paragraph?.maximumLineHeight).to(equal(7))
@@ -751,10 +751,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("removes existent value when set to nil") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.maximumLineHeight = 13
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.maximumLineHeight = nil
                     }
                     expect(string.runningAttributes).to(haveCount(0))
@@ -763,7 +763,7 @@ class TributeSpec: QuickSpec {
             
             describe("hyphenationFactor") {
                 it("sets new value") {
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.hyphenationFactor = 10
                     }
                     expect(string.runningAttributes).to(haveCount(1))
@@ -772,10 +772,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("overrides existent value with a new one") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.hyphenationFactor = 7
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         expect(string.runningAttributes).to(haveCount(1))
                         let paragraph = string.runningAttributes![NSParagraphStyleAttributeName] as? NSParagraphStyle
                         expect(paragraph?.hyphenationFactor).to(equal(7))
@@ -789,10 +789,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("removes existent value when set to nil") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.hyphenationFactor = 13
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.hyphenationFactor = nil
                     }
                     expect(string.runningAttributes).to(haveCount(0))
@@ -802,7 +802,7 @@ class TributeSpec: QuickSpec {
         if #available(iOS 9.0, *) {
             describe("allowsTighteningForTruncation") {
                 it("sets new value") {
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.allowsTighteningForTruncation = true
                     }
                     expect(string.runningAttributes).to(haveCount(1))
@@ -811,10 +811,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("overrides existent value with a new one") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.allowsTighteningForTruncation = true
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         expect(string.runningAttributes).to(haveCount(1))
                         let paragraph = string.runningAttributes![NSParagraphStyleAttributeName] as? NSParagraphStyle
                         expect(paragraph?.allowsDefaultTighteningForTruncation).to(equal(true))
@@ -828,10 +828,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("removes existent value when set to nil") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.allowsTighteningForTruncation = true
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.allowsTighteningForTruncation = nil
                     }
                     expect(string.runningAttributes).to(haveCount(0))
@@ -841,7 +841,7 @@ class TributeSpec: QuickSpec {
             
             describe("headIndent") {
                 it("sets new value") {
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.headIndent = 10
                     }
                     expect(string.runningAttributes).to(haveCount(1))
@@ -850,10 +850,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("overrides existent value with a new one") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.headIndent = 7
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         expect(string.runningAttributes).to(haveCount(1))
                         let paragraph = string.runningAttributes![NSParagraphStyleAttributeName] as? NSParagraphStyle
                         expect(paragraph?.headIndent).to(equal(7))
@@ -867,10 +867,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("removes existent value when set to nil") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.headIndent = 13
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.headIndent = nil
                     }
                     expect(string.runningAttributes).to(haveCount(0))
@@ -879,7 +879,7 @@ class TributeSpec: QuickSpec {
 
             describe("tailIndent") {
                 it("sets new value") {
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.tailIndent = 10
                     }
                     expect(string.runningAttributes).to(haveCount(1))
@@ -888,10 +888,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("overrides existent value with a new one") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.tailIndent = 7
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         expect(string.runningAttributes).to(haveCount(1))
                         let paragraph = string.runningAttributes![NSParagraphStyleAttributeName] as? NSParagraphStyle
                         expect(paragraph?.tailIndent).to(equal(7))
@@ -905,10 +905,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("removes existent value when set to nil") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.tailIndent = 13
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.tailIndent = nil
                     }
                     expect(string.runningAttributes).to(haveCount(0))
@@ -917,7 +917,7 @@ class TributeSpec: QuickSpec {
 
             describe("lineHeightMultiplier") {
                 it("sets new value") {
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.lineHeightMultiplier = 10
                     }
                     expect(string.runningAttributes).to(haveCount(1))
@@ -926,10 +926,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("overrides existent value with a new one") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.lineHeightMultiplier = 7
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         expect(string.runningAttributes).to(haveCount(1))
                         let paragraph = string.runningAttributes![NSParagraphStyleAttributeName] as? NSParagraphStyle
                         expect(paragraph?.lineHeightMultiple).to(equal(7))
@@ -943,10 +943,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("removes existent value when set to nil") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.lineHeightMultiplier = 13
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.lineHeightMultiplier = nil
                     }
                     expect(string.runningAttributes).to(haveCount(0))
@@ -955,7 +955,7 @@ class TributeSpec: QuickSpec {
 
             describe("kern") {
                 it("sets new value") {
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.kern = 5
                     }
                     expect(string.runningAttributes!).to(haveCount(1))
@@ -963,10 +963,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("overrides existent value with a new one") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.kern = 5
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         expect(string.runningAttributes!).to(haveCount(1))
                         expect(string.runningAttributes![NSKernAttributeName] as? Float).to(equal(5))
                         a.kern = 3
@@ -976,10 +976,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("removes existent value when set to nil") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.kern = 5
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.kern = nil
                     }
                     expect(string.runningAttributes).to(haveCount(0))
@@ -988,7 +988,7 @@ class TributeSpec: QuickSpec {
             
             describe("obliqueness") {
                 it("sets new value") {
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.obliqueness = 3
                     }
                     expect(string.runningAttributes!).to(haveCount(1))
@@ -996,10 +996,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("overrides existent value with a new one") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.obliqueness = 3
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         expect(string.runningAttributes!).to(haveCount(1))
                         expect(string.runningAttributes![NSObliquenessAttributeName] as? Float).to(equal(3))
                         
@@ -1010,10 +1010,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("removes existent value when set to nil") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.obliqueness = 10
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.obliqueness = nil
                     }
                     expect(string.runningAttributes).to(haveCount(0))
@@ -1022,7 +1022,7 @@ class TributeSpec: QuickSpec {
 
             describe("strikethrough") {
                 it("sets new value") {
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.strikethrough = .StyleSingle
                     }
                     expect(string.runningAttributes!).to(haveCount(1))
@@ -1030,10 +1030,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("overrides existent value with a new one") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.strikethrough = .StyleSingle
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         expect(string.runningAttributes!).to(haveCount(1))
                         expect(NSUnderlineStyle(rawValue: string.runningAttributes![NSStrikethroughStyleAttributeName] as! Int)).to(equal(NSUnderlineStyle.StyleSingle))
                         a.strikethrough = .StyleThick
@@ -1043,10 +1043,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("removes existent value when set to nil") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.strikethrough = .StyleThick
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.strikethrough = nil
                     }
                     expect(string.runningAttributes).to(haveCount(0))
@@ -1055,7 +1055,7 @@ class TributeSpec: QuickSpec {
             
             describe("strikethroughColor") {
                 it("sets new value") {
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.strikethroughColor = .redColor()
                     }
                     expect(string.runningAttributes!).to(haveCount(1))
@@ -1063,10 +1063,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("overrides existent value with a new one") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.strikethroughColor = .redColor()
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         expect(string.runningAttributes!).to(haveCount(1))
                         expect(string.runningAttributes![NSStrikethroughColorAttributeName] as? UIColor).to(equal(UIColor.redColor()))
                         a.strikethroughColor = .blueColor()
@@ -1076,10 +1076,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("removes existent value when set to nil") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.strikethroughColor = .redColor()
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.strikethroughColor = nil
                     }
                     expect(string.runningAttributes).to(haveCount(0))
@@ -1088,7 +1088,7 @@ class TributeSpec: QuickSpec {
             
             describe("stroke") {
                 it("sets new value") {
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.stroke = .Filled(width: 10)
                     }
                     expect(string.runningAttributes).to(haveCount(1))
@@ -1096,10 +1096,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("overrides existent value with a new one") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.stroke = .Filled(width: 10)
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         expect(string.runningAttributes).to(haveCount(1))
                         expect(string.runningAttributes![NSStrokeWidthAttributeName] as? Float).to(equal(-10))
 
@@ -1110,10 +1110,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("removes existent value when set to nil") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.stroke = .NotFilled(width: 10)
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.stroke = nil
                     }
                     expect(string.runningAttributes).to(haveCount(0))
@@ -1122,7 +1122,7 @@ class TributeSpec: QuickSpec {
             
             describe("strokeColor") {
                 it("sets new value") {
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.strokeColor = .redColor()
                     }
                     expect(string.runningAttributes).to(haveCount(1))
@@ -1130,10 +1130,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("overrides existent value with a new one") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.strokeColor = .redColor()
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         expect(string.runningAttributes).to(haveCount(1))
                         expect(string.runningAttributes![NSStrokeColorAttributeName] as? UIColor).to(equal(UIColor.redColor()))
 
@@ -1144,10 +1144,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("removes existent value when set to nil") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.strokeColor = UIColor.redColor()
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.strokeColor = nil
                     }
                     expect(string.runningAttributes).to(haveCount(0))
@@ -1157,7 +1157,7 @@ class TributeSpec: QuickSpec {
             
             describe("textEffect") {
                 it("sets new value") {
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.textEffect = .Letterpress
                     }
                     expect(string.runningAttributes).to(haveCount(1))
@@ -1168,17 +1168,17 @@ class TributeSpec: QuickSpec {
                     string.appendAttributedString(NSAttributedString(string: "invalid text effect", attributes: [
                         NSTextEffectAttributeName: "shazooo"
                     ]))
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         expect(a.textEffect).to(beNil())
                     }
                 }
 
                 // TODO: change the test when Cocoa supports more effects
                 it("overrides existent value with the same one") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.textEffect = .Letterpress
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         expect(string.runningAttributes).to(haveCount(1))
                         expect(string.runningAttributes?[NSTextEffectAttributeName] as? String).to(equal(NSTextEffectLetterpressStyle))
                        
@@ -1189,10 +1189,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("removes existent value when set to nil") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.textEffect = .Letterpress
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.textEffect = nil
                     }
                     expect(string.runningAttributes).to(haveCount(0))
@@ -1201,7 +1201,7 @@ class TributeSpec: QuickSpec {
             
             describe("underline") {
                 it("sets new value") {
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.underline = .StyleSingle
                     }
                     expect(string.runningAttributes!).to(haveCount(1))
@@ -1209,10 +1209,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("overrides existent value with a new one") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.underline = .StyleSingle
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         expect(string.runningAttributes!).to(haveCount(1))
                         expect(NSUnderlineStyle(rawValue: string.runningAttributes![NSUnderlineStyleAttributeName] as! Int)).to(equal(NSUnderlineStyle.StyleSingle))
                         a.underline = .StyleThick
@@ -1222,10 +1222,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("removes existent value when set to nil") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.underline = .StyleThick
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.underline = nil
                     }
                     expect(string.runningAttributes).to(haveCount(0))
@@ -1234,7 +1234,7 @@ class TributeSpec: QuickSpec {
 
             describe("underlineColor") {
                 it("sets new value") {
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.underlineColor = .redColor()
                     }
                     expect(string.runningAttributes!).to(haveCount(1))
@@ -1242,10 +1242,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("overrides existent value with a new one") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.underlineColor = .redColor()
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         expect(string.runningAttributes!).to(haveCount(1))
                         expect(string.runningAttributes![NSUnderlineColorAttributeName] as? UIColor).to(equal(UIColor.redColor()))
                         a.underlineColor = .blueColor()
@@ -1255,10 +1255,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("removes existent value when set to nil") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.underlineColor = .redColor()
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.underlineColor = nil
                     }
                     expect(string.runningAttributes).to(haveCount(0))
@@ -1274,7 +1274,7 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("sets new value") {
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.URL = url1
                     }
                     expect(string.runningAttributes!).to(haveCount(1))
@@ -1282,10 +1282,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("overrides existent value with a new one") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.URL = url1
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         expect(string.runningAttributes!).to(haveCount(1))
                         expect(string.runningAttributes![NSLinkAttributeName] as? NSURL).to(equal(url1))
 
@@ -1296,10 +1296,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("removes existent value when set to nil") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.URL = url1
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.URL = nil
                     }
                     expect(string.runningAttributes).to(haveCount(0))
@@ -1312,7 +1312,7 @@ class TributeSpec: QuickSpec {
         context("image") {
             var image: UIImage!
             beforeSuite {
-                let bundle = NSBundle(forClass: self.dynamicType)
+                let bundle = NSBundle(forClass: type(of: self))
                 image = UIImage(named: "swift", inBundle: bundle, compatibleWithTraitCollection: nil)!
             }
 
@@ -1356,7 +1356,7 @@ class TributeSpec: QuickSpec {
         context("helpers") {
             describe("fontSize") {
                 it("sets new value") {
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.fontSize = 20
                     }
                     expect(string.runningAttributes).to(haveCount(1))
@@ -1364,10 +1364,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("overrides existent value with a new one") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.fontSize = 20
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         expect(string.runningAttributes).to(haveCount(1))
                         expect((string.runningAttributes![NSFontAttributeName] as? UIFont)?.pointSize).to(equal(20))
                         
@@ -1378,10 +1378,10 @@ class TributeSpec: QuickSpec {
                 }
                 
                 it("removes existent value when set to nil") {
-                    string.add("tomato") { (inout a: Attributes) in
+                    string.add("tomato") { (a: inout Attributes) in
                         a.fontSize = 30
                     }
-                    string.add("potato") { (inout a: Attributes) in
+                    string.add("potato") { (a: inout Attributes) in
                         a.fontSize = nil
                     }
                     expect(string.runningAttributes).to(haveCount(0))

@@ -13,17 +13,17 @@ public struct Attributes {
     typealias RawAttributes = [String: AnyObject]
     
     public enum TextEffect {
-        case Letterpress
+        case letterpress
     }
     
     public enum GlyphDirection {
-        case Vertical
-        case Horizontal
+        case vertical
+        case horizontal
     }
     
     public enum Stroke {
-        case NotFilled(width: Float)
-        case Filled(width: Float)
+        case notFilled(width: Float)
+        case filled(width: Float)
     }
     
     public var alignment: NSTextAlignment?
@@ -44,7 +44,7 @@ public struct Attributes {
     public var textEffect: TextEffect?
     public var underline: NSUnderlineStyle?
     public var underlineColor: UIColor?
-    public var URL: NSURL?
+    public var URL: Foundation.URL?
     
     public var lineBreakMode: NSLineBreakMode?
     public var lineHeightMultiplier: Float?
@@ -62,7 +62,7 @@ public struct Attributes {
 private extension Attributes.TextEffect {
     init?(stringValue: String) {
         if stringValue == NSTextEffectLetterpressStyle {
-            self = .Letterpress
+            self = .letterpress
         } else {
             return nil
         }
@@ -70,7 +70,7 @@ private extension Attributes.TextEffect {
     
     var stringValue: String {
         switch self {
-        case .Letterpress:
+        case .letterpress:
             return NSTextEffectLetterpressStyle
         }
     }
@@ -79,17 +79,17 @@ private extension Attributes.TextEffect {
 private extension Attributes.Stroke {
     init(floatValue: Float) {
         if floatValue < 0 {
-            self = .Filled(width: -floatValue)
+            self = .filled(width: -floatValue)
         } else {
-            self = .NotFilled(width: floatValue)
+            self = .notFilled(width: floatValue)
         }
     }
     
     var floatValue: Float {
         switch self {
-        case let .NotFilled(width):
+        case let .notFilled(width):
             return width
-        case let .Filled(width):
+        case let .filled(width):
             return -width
         }
     }
@@ -99,9 +99,9 @@ private extension Attributes.GlyphDirection {
     init?(intValue: Int) {
         switch intValue {
         case 0:
-            self = .Horizontal
+            self = .horizontal
         case 1:
-            self = .Vertical
+            self = .vertical
         default:
             return nil
         }
@@ -109,9 +109,9 @@ private extension Attributes.GlyphDirection {
     
     var intValue: Int {
         switch self {
-        case .Horizontal:
+        case .horizontal:
             return 0
-        case .Vertical:
+        case .vertical:
             return 1
         }
     }
@@ -166,13 +166,13 @@ extension Attributes {
             self.underline = NSUnderlineStyle(rawValue: underline)
         }
         self.underlineColor = attributes[NSUnderlineColorAttributeName] as? UIColor
-        self.URL = attributes[NSLinkAttributeName] as? NSURL
+        self.URL = attributes[NSLinkAttributeName] as? Foundation.URL
     }
     
     /// convenience method for comparing attributes on `paragraph` vs `defaultParagrah`
-    private func paraStyleCompare<U: Equatable>(paragraph: NSParagraphStyle, trans: NSParagraphStyle -> U) -> U? {
+    fileprivate func paraStyleCompare<U: Equatable>(_ paragraph: NSParagraphStyle, trans: (NSParagraphStyle) -> U) -> U? {
         let x = trans(paragraph)
-        let y = trans(NSParagraphStyle.defaultParagraphStyle())
+        let y = trans(NSParagraphStyle.default)
         return (x == y) ? nil : x
     }
 }
@@ -182,7 +182,7 @@ extension Attributes {
     public var fontSize: Float? {
         set {
             if let newValue = newValue {
-                self.font = currentFont.fontWithSize(CGFloat(newValue))
+                self.font = currentFont.withSize(CGFloat(newValue))
             } else {
                 self.font = nil
             }
@@ -194,37 +194,37 @@ extension Attributes {
     
     public var bold: Bool {
         set {
-            setTrait(.TraitBold, enabled: newValue)
+            setTrait(.traitBold, enabled: newValue)
         }
         get {
-            return currentFont.fontDescriptor().symbolicTraits.contains(.TraitBold)
+            return currentFont.fontDescriptor.symbolicTraits.contains(.traitBold)
         }
     }
     
     public var italic: Bool {
         set {
-            setTrait(.TraitItalic, enabled: newValue)
+            setTrait(.traitItalic, enabled: newValue)
         }
         get {
-            return currentFont.fontDescriptor().symbolicTraits.contains(.TraitItalic)
+            return currentFont.fontDescriptor.symbolicTraits.contains(.traitItalic)
         }
     }
     
-    private mutating func setTrait(trait: UIFontDescriptorSymbolicTraits, enabled: Bool) {
+    fileprivate mutating func setTrait(_ trait: UIFontDescriptorSymbolicTraits, enabled: Bool) {
         let font = currentFont
-        let descriptor = font.fontDescriptor()
+        let descriptor = font.fontDescriptor
         var traits = descriptor.symbolicTraits
         if enabled {
             traits.insert(trait)
         } else {
             traits.remove(trait)
         }
-        let newDescriptor = descriptor.fontDescriptorWithSymbolicTraits(traits)
-        self.font = UIFont(descriptor: newDescriptor, size: font.pointSize)
+        let newDescriptor = descriptor.withSymbolicTraits(traits)
+        self.font = UIFont(descriptor: newDescriptor!, size: font.pointSize)
     }
     
-    private static let defaultFont = UIFont.systemFontOfSize(12)
-    private var currentFont: UIFont {
+    fileprivate static let defaultFont = UIFont.systemFont(ofSize: 12)
+    fileprivate var currentFont: UIFont {
         if let font = self.font {
             return font
         } else {
@@ -274,32 +274,32 @@ extension Attributes {
     var rawAttributes: RawAttributes {
         var result: RawAttributes = [:]
         result[NSBackgroundColorAttributeName] = backgroundColor
-        result[NSBaselineOffsetAttributeName] = baseline
+        result[NSBaselineOffsetAttributeName] = baseline as AnyObject?
         result[NSForegroundColorAttributeName] = color
-        result[NSVerticalGlyphFormAttributeName] = direction?.intValue
-        result[NSExpansionAttributeName] = expansion
+        result[NSVerticalGlyphFormAttributeName] = direction?.intValue as AnyObject?
+        result[NSExpansionAttributeName] = expansion as AnyObject?
         result[NSFontAttributeName] = font
-        result[NSKernAttributeName] = kern
+        result[NSKernAttributeName] = kern as AnyObject?
         if let ligature = ligature {
-            result[NSLigatureAttributeName] = ligature ? 1 : 0
+            result[NSLigatureAttributeName] = ligature ? 1 as AnyObject? : 0 as AnyObject?
         }
         if let paragraph = retrieveParagraph() {
             result[NSParagraphStyleAttributeName] = paragraph
         }
-        result[NSStrikethroughStyleAttributeName] = strikethrough?.rawValue
+        result[NSStrikethroughStyleAttributeName] = strikethrough?.rawValue as AnyObject?
         result[NSStrikethroughColorAttributeName] = strikethroughColor
-        result[NSStrokeWidthAttributeName] = stroke?.floatValue
+        result[NSStrokeWidthAttributeName] = stroke?.floatValue as AnyObject?
         result[NSStrokeColorAttributeName] = strokeColor
-        result[NSObliquenessAttributeName] = obliqueness
-        result[NSTextEffectAttributeName] = textEffect?.stringValue
-        result[NSUnderlineStyleAttributeName] = underline?.rawValue
+        result[NSObliquenessAttributeName] = obliqueness as AnyObject?
+        result[NSTextEffectAttributeName] = textEffect?.stringValue as AnyObject?
+        result[NSUnderlineStyleAttributeName] = underline?.rawValue as AnyObject?
         result[NSUnderlineColorAttributeName] = underlineColor
-        result[NSLinkAttributeName] = URL
+        result[NSLinkAttributeName] = URL as AnyObject?
         
         return result
     }
 
-    private func isAnyNotNil(objects: Any? ...) -> Bool {
+    fileprivate func isAnyNotNil(_ objects: Any? ...) -> Bool {
         for object in objects {
             if object != nil {
                 return true
@@ -309,7 +309,7 @@ extension Attributes {
     }
     
     
-    private func retrieveParagraph() -> NSMutableParagraphStyle? {
+    fileprivate func retrieveParagraph() -> NSMutableParagraphStyle? {
         if !isAnyNotNil(leading, alignment, lineBreakMode, lineHeightMultiplier,
             paragraphSpacingAfter, paragraphSpacingBefore, headIndent, tailIndent,
             firstLineHeadIndent, minimumLineHeight, maximumLineHeight, hyphenationFactor,
@@ -344,21 +344,21 @@ extension NSAttributedString {
         guard length > 0 else {
             return nil
         }
-        return attributesAtIndex(length - 1, effectiveRange: nil)
+        return attributes(at: length - 1, effectiveRange: nil) as [String : AnyObject]?
     }
     
-    private var fullRange: NSRange {
+    fileprivate var fullRange: NSRange {
         return NSRange(location: 0, length: length)
     }
 }
 
 
 public extension NSMutableAttributedString {
-    public typealias AttributeSetter = (inout attributes: Attributes) -> Void
+    public typealias AttributeSetter = (_ attributes: inout Attributes) -> Void
     
-    public func add(text: String, setter: AttributeSetter? = nil) -> NSMutableAttributedString {
+    public func add(_ text: String, setter: AttributeSetter? = nil) -> NSMutableAttributedString {
         var attributes = runningOrNewAttributes
-        setter?(attributes: &attributes)
+        setter?(&attributes)
         return add(text, attributes: attributes)
     }
     
@@ -370,17 +370,17 @@ public extension NSMutableAttributedString {
         }
     }
     
-    func add(text: String, attributes: Attributes) -> NSMutableAttributedString {
+    func add(_ text: String, attributes: Attributes) -> NSMutableAttributedString {
         let attributedString = NSAttributedString(string: text, attributes: attributes.rawAttributes)
-        appendAttributedString(attributedString)
+        append(attributedString)
         return self
     }
 }
 
 public extension NSMutableAttributedString {
-    public func add(image: UIImage, bounds: CGRect? = nil, setter: AttributeSetter? = nil) -> NSMutableAttributedString {
+    public func add(_ image: UIImage, bounds: CGRect? = nil, setter: AttributeSetter? = nil) -> NSMutableAttributedString {
         var attributes = runningOrNewAttributes
-        setter?(attributes: &attributes)
+        setter?(&attributes)
         let attachment = NSTextAttachment()
         attachment.image = image
         if let bounds = bounds {
@@ -388,7 +388,7 @@ public extension NSMutableAttributedString {
         }
         let string = NSMutableAttributedString(attributedString: NSAttributedString(attachment: attachment))
         string.addAttributes(attributes.rawAttributes, range: string.fullRange)
-        appendAttributedString(string)
+        append(string)
         return self
     }
 }
