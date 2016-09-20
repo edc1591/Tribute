@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'Tribute'
-  s.version = '0.2'
+  s.version = '0.1'
   s.license = { :type => 'MIT' }
   s.summary = 'Programmatic creation of NSAttributedString doesn\'t have to be a pain'
   s.homepage = 'https://github.com/edc1591/Tribute'
