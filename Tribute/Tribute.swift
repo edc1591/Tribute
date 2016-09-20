@@ -220,7 +220,7 @@ extension Attributes {
             traits.remove(trait)
         }
         let newDescriptor = descriptor.fontDescriptorWithSymbolicTraits(traits)
-        self.font = UIFont(descriptor: newDescriptor, size: font.pointSize)
+        self.font = UIFont(descriptor: newDescriptor!, size: font.pointSize)
     }
     
     private static let defaultFont = UIFont.systemFontOfSize(12)
